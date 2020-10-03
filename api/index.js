@@ -1,9 +1,9 @@
+if (!Array.prototype.last) Array.prototype.last = function() {return this[this.length - 1]};
+
 const express = require('express')
 	, app = express()
-	, users = require('./users.json')
-	, questions = require('./questions')
-	, { writeFile } = require('fs')
-	, saveUsers = () => {writeFile('./users.json',  JSON.stringify(users), 'utf8', () => {});}
+	, auth = require('./controllers/auth')
+	, codes = require('./controllers/codes')
 ;
 
 /*
@@ -23,22 +23,19 @@ Body:
 	answer
  */
 
+app
+	.use(require('cors')(require('./controllers/cors')))
+	.use(express.json())
+	.use(express.urlencoded({ extended: true }))
+
 app.get('/', (req, res) => res.json({ status: 'I work!' }));
 
-app.get('/sync', (req, res) => {
-	res.end();
-});
+app.get('/sync', auth.checkAuth, codes.sync);
 
-app.post('/registration', (req, res) => {
-	res.end();
-});
+app.post('/registration', auth.registration);
 
-app.post('/scan', (req, res) => {
-	res.end();
-});
+app.post('/scan', auth.checkAuth, codes.scan);
 
-app.post('/check', (req, res) => {
-	res.end();
-});
+app.post('/check', auth.checkAuth, codes.check);
 
-app.listen(process.env.PORT || 8081, () => console.log('Listen on :', process.env.PORT || 8081));
+app.listen(process.env.PORT || 8080, () => console.log('Listen on :', process.env.PORT || 8080));

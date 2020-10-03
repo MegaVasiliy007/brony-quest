@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "dev": "nodemon .",
-    "start": "node ."
+    "start": "NODE_ENV=production node ."
   },
   "dependencies": {
     "cors": "^2.8.5",
