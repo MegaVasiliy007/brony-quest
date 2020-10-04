@@ -5,7 +5,7 @@ const { users, saveUsers } = require('../utils/users')
 
 module.exports = {
 	sync({ user }, res) {
-		res.json({ status: 'OK', tasks: { complete: users[user].complete, failed: users[user].failed } });
+		res.json({ status: 'OK', tasks: { all: users[user].all, complete: users[user].complete, failed: users[user].failed } });
 	},
 
 	scan({ user, body: { hash } }, res) {

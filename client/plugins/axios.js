@@ -3,5 +3,6 @@ export default ({$axios}) => {
 		console.log('Making request to ' + config.url)
 	})
 
-	$axios.setBaseURL('http://95.174.110.154:8080')
+	$axios.setBaseURL('http://95.174.110.154:8080');
+	if (localStorage.name) $axios.setToken(btoa(localStorage.name + ':' + localStorage.hash), 'Basic');
 }

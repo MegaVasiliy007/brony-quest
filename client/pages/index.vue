@@ -6,34 +6,50 @@
 			<button @click="login">Полетели</button>
 		</div>
 		<div v-if="state === 1">
+			<p>{{ username }}</p>
 			<button @click="scan">Сканировать</button>
+			<div>
+				<p>Команда:</p>
+				<div v-for="i in tasks.all">
+					<span v-if="tasks.complete.indexOf(i) > -1">+</span>
+					<span v-if="tasks.failed.indexOf(i) > -1">-</span>
+				</div>
+			</div>
 		</div>
 		<div v-if="state === 2">
-			<qrcode-stream @decode="onDecode"></qrcode-stream>
+			<qrcode-capture @decode="onDecode"></qrcode-capture>
 		</div>
 	</div>
 </template>
 
 <script>
-import { QrcodeStream } from 'vue-qrcode-reader';
+import { QrcodeStream, QrcodeCapture } from 'vue-qrcode-reader';
 import { mapGetters } from 'vuex';
 
 export default {
 	name: 'index',
 	components: {
-		QrcodeStream
+		QrcodeStream,
+		QrcodeCapture
 	},
 	computed: {
 		...mapGetters(['isAuth', 'getName'])
 	},
-	data() {
+	async asyncData({ $axios }) {
+		let tasks;
+		if (localStorage.name)
+			tasks = await $axios.$get('/sync');
+
 		return {
 			state: localStorage.name ? 1 : 0,
-			username: localStorage.name
+			username: localStorage.name,
+			tasks
 		}
 	},
 	methods: {
 		async login() {
+			if (this.isAuth) return;
+
 			const { status, hash } = await this.$axios.$post('/registration', {username: this.username});
 			if (status !== 'OK') return;
 
@@ -45,8 +61,12 @@ export default {
 			this.state = 2;
 		},
 
-		onDecode (decodedString) {
-			console.log(decodedString);
+		async onDecode (hash) {
+			console.log(hash);
+			const { status, question } = await this.$axios.$post('/scan', {hash});
+			if (status !== 'OK') return;
+
+			console.log(question);
 			this.state = 1;
 		}
 	}
