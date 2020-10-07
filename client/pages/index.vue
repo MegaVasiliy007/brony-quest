@@ -1,7 +1,7 @@
 <template>
   <main>
       <!--  Auth  -->
-      <div v-if="state === 0" class="authorization">
+      <div v-if="page === 0" class="authorization">
         <h1 class="authorization__title">Собери команду</h1>
         <form class="authorization__form form">
           <label class="form__label">
@@ -13,7 +13,7 @@
       </div>
 
       <!--  Scan  -->
-      <div v-if="state === 1" class="collection">
+      <div v-if="page === 1" class="collection">
         <h1 class="srOnly">Ваш профиль</h1>
         <div class="collection__head">
           <p class="collection__name">{{ username }}</p>
@@ -26,17 +26,36 @@
           <h2 class="team__title">Ваша команда</h2>
           <ul class="team__list">
             <li v-for="i in tasks.all" class="team__item">
-              <img v-if="tasks.complete.indexOf(i) > -1" :src="`/images/${i}.jpg`" alt=""/>
-              <img v-if="tasks.failed.indexOf(i) > -1" src="/images/inaccessible.jpg" alt=""/>
+              <img v-if="tasks.complete.indexOf(i-1) > -1" :src="`/images/${i-1}.jpg`" alt=""/>
+              <img v-if="tasks.failed.indexOf(i-1) > -1" src="/images/inaccessible.jpg" alt=""/>
             </li>
           </ul>
         </section>
       </div>
 
       <!--  Qrcode  -->
-      <div v-if="state === 2">
+      <div v-if="page === 2">
         <qrcode-capture @decode="onDecode"></qrcode-capture>
       </div>
+
+      <modal name="question" style="color:#333;">
+        <p v-if="question.text" v-html="question.text"/>
+        <img v-if="question.image" :src="question.image" alt="">
+        <br>
+        <ul v-if="questionHasVariants">
+          <li v-for="variant of question.variants"><label><input v-model="answer" type="radio" name="question" :value="variant"> <span v-html="variant"/></label></li>
+        </ul>
+        <input v-else v-model="answer" type="text">
+        <button @click="sendAnswer"> Отправить</button>
+      </modal>
+
+    <modal name="right-ans">
+      <p>Всё гуд</p>
+    </modal>
+
+    <modal name="fail-ans">
+      <p>Всё плохо</p>
+    </modal>
   </main>
 </template>
 
@@ -51,17 +70,26 @@ export default {
 		QrcodeCapture
 	},
 	computed: {
-		...mapGetters(['isAuth', 'getName'])
+		...mapGetters(['isAuth', 'getName']),
+    questionHasVariants() {
+		  return this.question.variants && this.question.variants.length;
+    }
 	},
 	async asyncData({ $axios }) {
-		let tasks = {};
+		let tasks = { tasks: { all: 0, complete: [], failed: [] } };
 		if (localStorage.name)
 			tasks = await $axios.$get('/sync');
 
+		tasks = tasks.tasks;
+
 		return {
-			state: localStorage.name ? 1 : 0,
+      page: localStorage.name ? 1 : 0,
 			username: localStorage.name,
-			tasks
+			tasks,
+      question: {},
+      answer: '',
+      hash: null,
+      step: false
 		}
 	},
 	methods: {
@@ -72,21 +100,49 @@ export default {
 			if (status !== 'OK') return;
 
 			this.$store.commit('auth', {username: this.username, hash});
-			this.state = 1;
+			this.page = 1;
 		},
 
 		scan() {
-			this.state = 2;
+			this.page = 2;
 		},
 
 		async onDecode (hash) {
-			console.log(hash);
 			const { status, question } = await this.$axios.$post('/scan', {hash});
 			if (status !== 'OK') return;
 
 			console.log(question);
-			this.state = 1;
-		}
+      this.question = question;
+      this.hash = hash;
+      this.page = 1;
+      this.step = false;
+      this.$modal.show('question');
+		},
+
+    async sendAnswer() {
+      const { status: statusAns } = await this.$axios.$post('/check', {hash: this.hash, answer: this.answer});
+
+      if (statusAns === 'OK') {
+        this.tasks.complete.push(this.tasks.all++);
+        this.$modal.hide('question');
+        this.$modal.show('right-ans');
+        return;
+      }
+
+      if (this.step) {
+        this.tasks.failed.push(this.tasks.all++);
+        this.$modal.hide('question');
+        this.$modal.show('fail-ans');
+        return;
+      }
+
+      const { status, question } = await this.$axios.$post('/scan', {hash: this.hash});
+      if (status !== 'OK') return;
+
+      console.log(question);
+      this.question = question;
+      this.step = true;
+    }
 	}
 };
 </script>

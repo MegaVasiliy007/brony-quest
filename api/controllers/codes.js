@@ -24,16 +24,25 @@ module.exports = {
 
 		users[user].tasks.push(questionIndex);
 		saveUsers();
-		res.json({ status: 'OK', question: questions[questionIndex] });
+
+		const question = {...questions[questionIndex]};
+		delete question.answer;
+		res.json({ status: 'OK', question });
 	},
 
 	check({ user, body: { hash, answer } }, res) {
+		console.log(user, hash, answer);
 		if (!users[user].codes.hasOwnProperty(hash)) {
 			res.json({status: 'error'});
 			return;
 		}
 
+		console.log(users[user].tasks);
+
 		const question = questions[users[user].tasks.last()];
+
+		console.log(question);
+
 		if (question.answer !== answer) {
 			if (users[user].codes[hash] === 'SECOND') {users[user].codes[hash] = 'FAIL'; users[user].failed.push(users[user].all++);}
 			saveUsers();

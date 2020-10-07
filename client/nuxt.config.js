@@ -4,6 +4,7 @@ export default {
 		'@nuxtjs/axios'
 	],
 	plugins: [
-		'~/plugins/axios'
+		'~/plugins/axios',
+		'~/plugins/vue-js-modal'
 	]
 };

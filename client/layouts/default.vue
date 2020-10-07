@@ -2,7 +2,7 @@
   <div class="page__body container">
     <nuxt/>
     <footer class="footer">
-      <p>Powered by <a href="" target="_blank" rel="noopener">MegaVasily007</a>, <a href="http://aurora-webstudio.com/" target="_blank" rel="noopener">Aurora Web</a></p>
+      <p>Powered by <a href="https://mega.sdc.su" target="_blank" rel="noopener">MegaVasily007</a>, <a href="http://aurora-webstudio.com/" target="_blank" rel="noopener">Aurora Web</a></p>
     </footer>
   </div>
 </template>

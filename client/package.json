@@ -11,6 +11,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.12.2",
     "nuxt": "^2.14.6",
+    "vue-js-modal": "^2.0.0-rc.6",
     "vue-qrcode-reader": "^2.3.13"
   },
   "devDependencies": {

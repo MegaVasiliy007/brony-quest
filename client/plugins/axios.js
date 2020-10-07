@@ -4,5 +4,5 @@ export default ({$axios}) => {
 	})
 
 	$axios.setBaseURL('http://95.174.110.154:8080');
-	if (localStorage.name) $axios.setToken(btoa(localStorage.name + ':' + localStorage.hash), 'Basic');
+	if (localStorage.name) $axios.setToken(btoa(unescape(encodeURIComponent(localStorage.name + ':' + localStorage.hash))), 'Basic');
 }

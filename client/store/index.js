@@ -18,7 +18,7 @@ export const mutations = {
 		state.hash = hash;
 		localStorage.name = state.name;
 		localStorage.hash = state.hash;
-		this.$axios.setToken(btoa(state.name + ':' + state.hash), 'Basic');
+		this.$axios.setToken(btoa(unescape(encodeURIComponent(state.name + ':' + state.hash))), 'Basic');
 	}
 };
 
