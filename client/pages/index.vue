@@ -17,7 +17,7 @@
         <h1 class="srOnly">Ваш профиль</h1>
         <div class="collection__head">
           <p class="collection__name">{{ username }}</p>
-          <img src="/images/collectBg.png" alt="">
+          <img src="~static/images/collectBg.png" alt="">
         </div>
         <button @click="scan" class="collection__scanButton">Сканировать код</button>
         <button @click="" class="collection__helpButton">Помощь</button>
@@ -27,7 +27,7 @@
           <ul class="team__list">
             <li v-for="i in tasks.all" class="team__item">
               <img v-if="tasks.complete.indexOf(i-1) > -1" :src="`/images/${i-1}.jpg`" alt=""/>
-              <img v-if="tasks.failed.indexOf(i-1) > -1" src="/images/inaccessible.jpg" alt=""/>
+              <img v-if="tasks.failed.indexOf(i-1) > -1" src="~static/images/inaccessible.jpg" alt=""/>
             </li>
           </ul>
         </section>
@@ -74,7 +74,7 @@
 
     <modal name="fail-ans" :adaptive="true" :maxWidth="320" classes="modal modal_alert modal_fail">
       <p>Сори...</p>
-      <img src="/images/answer_fail.png" alt="" class="modal__failImage">
+      <img src="~static/images/answer_fail.png" alt="" class="modal__failImage">
     </modal>
   </main>
 </template>
@@ -173,7 +173,7 @@ export default {
   .authorization {
     padding-top: calc(10% + 294px + 4%);
     padding-bottom: 100px;
-    background-image: url('/images/authBg.png');
+    background-image: url('~static/images/authBg.png');
     background-size: 100% 294px;
     background-position: center 10%;
     background-repeat: no-repeat;
