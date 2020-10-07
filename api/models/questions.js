@@ -1,21 +1,9 @@
 module.exports = [
-	// {
-	// 	text: '',
-	// 	image: 'https://cdn.syn-ch.com/src/139/35/25/1393525428942.jpg',
-	// 	variants: [],
-	// 	answer: ''
-	// },
-	// {
-	// 	text: '',
-	// 	image: 'https://psv4.userapi.com/c856324/u2000041256/docs/d16/210b84089f44/file.gif',
-	// 	variants: [],
-	// 	answer: ''
-	// },
 	{
 		text: 'Задиристая кузина Биг Мака из Мейнхеттена.',
 		image: '',
 		variants: [],
-		answer: 'Бэбс Сид'
+		answer: /Б[эе]б[сз] Си[дт]/g
 	},
 	{
 		text: 'Племянник Принцессы Селестии:',
@@ -30,6 +18,12 @@ module.exports = [
 		answer: 'Вишневая'
 	},
 	{
+		text: '',
+		image: 'https://cdn.syn-ch.com/src/139/35/25/1393525428942.jpg',
+		variants: [],
+		answer: ''
+	},
+	{
 		text: "Продолжите песню:<br>In Our Town, in Our Town<br>We don't have to wait",
 		image: '',
 		variants: [
@@ -39,5 +33,77 @@ module.exports = [
 			'This is where the magic happens<br>This is where the magic lives'
 		],
 		answer: 'To find out that our destiny<br>Is just to emulate'
-	}
+	},
+	{
+		text: 'Какой сезон получился наиболее коротким, так как планировался последним?',
+		image: '',
+		variants: ['3', '4', '5', '6'],
+		answer: '3'
+	},
+	{
+		text: 'Сильные духи, питающиеся злом и ненавистью пони, приносят с собой холод.',
+		image: '',
+		variants: [],
+		answer: /В[ие]ндиго/g
+	},
+	{
+		text: 'Эта пони стала второй половинкой Биг Мака под действием приворотного зелья в серии "Hearth\'s and Hooves Day" ("День Сердец и Копыт")',
+		image: '',
+		variants: ['Шугар Белль', 'Черили', 'Берри Панч', 'Рэрити'],
+		answer: 'Черили'
+	},
+	{
+		text: 'Элемент Радости',
+		image: '',
+		variants: ['Эпплджек', 'Рэйнбоу Дэш', 'Твайлайт Спаркл', 'Пинки Пай'],
+		answer: 'Пинки Пай'
+	},
+	{
+		text: 'Праздник уборки зимы',
+		image: '',
+		variants: ['Summer Sun Celebration', 'Nigtmare Night', 'Winter Wrap Up', 'Hearth\'s Warming Eve'],
+		answer: 'Winter Wrap Up'
+	},
+	{
+		text: 'Именно она украла у принцессы СкайСтар жемчужину в MLP:Movie',
+		image: '',
+		variants: ['Пинки Пай', 'Эпплджек', 'Рэйнбоу Дэш', 'Твайлайт Спаркл'],
+		answer: 'Твайлайт Спаркл'
+	},
+	{
+		text: '',
+		image: 'https://cdn.discordapp.com/attachments/673970806761586718/763521837907968000/file.gif',
+		variants: [],
+		answer: ''
+	},
+	{
+		text: 'Питомец Твайлайт',
+		image: '',
+		variants: ['Филин', 'Собака', 'Крокодил', 'Дракончик'],
+		answer: 'Филин'
+	},
+	{
+		text: 'Единственный злодей, который не был заточён в камень в последней серии 9 сезона',
+		image: '',
+		variants: ['Флурри Харт', 'Тирек', 'Кризалис', 'Сомбра'],
+		answer: 'Сомбра'
+	},
+	{
+		text: 'Синий аликорн',
+		image: '',
+		variants: ['Твайлайт', 'Селестия', 'Луна', 'Флурри Харт'],
+		answer: 'Луна'
+	},
+	{
+		text: 'Некогда подруга Рэйнбоу Дэш, грифон',
+		image: '',
+		variants: ['Гильда', 'Отом Блейз', 'Вайнона', 'Черили'],
+		answer: 'Гильда'
+	},
+	{
+		text: 'Отсюда родом Рэйнбоу Дэш',
+		image: '',
+		variants: ['Понивилль', 'Эпплуза', 'Кантерлот', 'Клоудсдейл'],
+		answer: 'Клоудсдейл'
+	},
 ]
