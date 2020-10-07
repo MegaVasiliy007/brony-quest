@@ -4,7 +4,7 @@
       <div v-if="page === 0" class="authorization">
         <h1 class="authorization__title">Собери команду</h1>
         <form class="authorization__form form">
-          <label class="form__label">
+          <label>
             <span class="srOnly">Введите ваше имя</span>
             <input v-model="username" type="text" placeholder="Имя" class="form__input">
           </label>
@@ -38,23 +38,43 @@
         <qrcode-capture @decode="onDecode"></qrcode-capture>
       </div>
 
-      <modal name="question" style="color:#333;">
-        <p v-if="question.text" v-html="question.text"/>
-        <img v-if="question.image" :src="question.image" alt="">
-        <br>
-        <ul v-if="questionHasVariants">
-          <li v-for="variant of question.variants"><label><input v-model="answer" type="radio" name="question" :value="variant"> <span v-html="variant"/></label></li>
-        </ul>
-        <input v-else v-model="answer" type="text">
-        <button @click="sendAnswer"> Отправить</button>
+      <modal name="question"
+             :scrollable="true"
+             :clickToClose="false"
+             :focusTrap="true"
+             :adaptive="true"
+             :maxWidth="320"
+             height="auto"
+             classes="modal"
+      >
+        <form class="modal__form form">
+          <p v-if="question.text" v-html="question.text" class="modal__question"/>
+          <img v-if="question.image" :src="question.image" alt="" class="modal__image">
+
+          <ul v-if="questionHasVariants">
+            <li v-for="variant of question.variants" class="modal__option option">
+              <label class="check">
+                <input v-model="answer" type="radio" name="question" :value="variant" class="check__input">
+                <span class="check__box"/>
+                <span v-html="variant" class="option__text"/>
+              </label>
+            </li>
+          </ul>
+
+          <input v-else  v-model="answer" type="text" class="modal__input form__input" placeholder="Ответ">
+
+          <button @click.prevent="sendAnswer" class="modal__button">Отправить</button>
+        </form>
       </modal>
 
-    <modal name="right-ans">
-      <p>Всё гуд</p>
+    <modal name="right-ans" :adaptive="true" :maxWidth="320" classes="modal modal_alert modal_right">
+      <p>ya got</p>
+      <p class="modal__rightName">Рейнбоу Деш</p>
     </modal>
 
-    <modal name="fail-ans">
-      <p>Всё плохо</p>
+    <modal name="fail-ans" :adaptive="true" :maxWidth="320" classes="modal modal_alert modal_fail">
+      <p>Сори...</p>
+      <img src="/images/answer_fail.png" alt="" class="modal__failImage">
     </modal>
   </main>
 </template>
@@ -113,6 +133,7 @@ export default {
 
 			console.log(question);
       this.question = question;
+      this.answer = this.question.variants[0];
       this.hash = hash;
       this.page = 1;
       this.step = false;
@@ -141,13 +162,14 @@ export default {
 
       console.log(question);
       this.question = question;
+      this.answer = this.question.variants[0];
       this.step = true;
     }
 	}
 };
 </script>
 
-<style scoped>
+<style>
   .authorization {
     padding-top: calc(10% + 294px + 4%);
     padding-bottom: 100px;
@@ -186,7 +208,6 @@ export default {
 
   .collection__scanButton {
     margin-top: 24px;
-    box-shadow: 2px 4px 6px rgba(221, 34, 214, 0.25);
   }
 
   .collection__helpButton {
@@ -218,5 +239,112 @@ export default {
     display: flex;
     border-radius: 50%;
     overflow: hidden;
+  }
+
+  /* Modals */
+  .vm--overlay {
+    background: #F2994A;
+    opacity: 0.6;
+  }
+
+  .modal {
+    padding: 16px;
+    border-radius: 20px;
+    color: var(--color-gray1);
+  }
+
+  .modal_alert {
+    display: flex;
+    align-items: center;
+    padding: 24px 10px 24px 32px;
+    font-family: var(--equestria);
+    font-size: 58px;
+    color: #fff;
+  }
+
+  .modal_fail {
+    background: linear-gradient(91.88deg, rgba(247, 22, 22, 0.7) -11.44%, rgba(146, 13, 13, 0.7) 106.2%), #C26FCF;
+  }
+
+  .modal__failImage {
+    position: absolute;
+    width: 201px;
+    right: 10px;
+  }
+
+  .modal_right {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+    background: linear-gradient(91.88deg, rgba(94, 163, 41, 0.7) -11.44%, rgba(186, 217, 0, 0.7) 106.2%), #3CB328;
+  }
+
+  .modal__rightName {
+    margin-top: 16px;
+    font-size: 50px;
+  }
+
+  .modal__question {
+    font-family: var(--equestria);
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .modal__question a {
+    color: #7C29A3;
+  }
+
+  .modal__image {
+    margin-bottom: 24px;
+    border-radius: 5px;
+  }
+
+  .modal__option + .modal__option {
+    margin-top: 12px;
+  }
+
+  .check {
+    padding-left: 1.2em;
+  }
+
+  .check__input {
+    position: absolute;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  .check__box {
+    position: absolute;
+    margin-top: 4px;
+    margin-left: -20px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    box-shadow: inset 1px 1px 5px rgba(212, 64, 219, 0.5);
+  }
+
+  .check__input:checked + .check__box:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    margin: auto;
+    border-radius: 50%;
+    background-color: #E57CEA;
+  }
+
+  .modal__input {
+    background: linear-gradient(91.88deg, rgba(124, 41, 163, 0.4) -11.44%, rgba(212, 0, 217, 0.4) 106.2%);
+  }
+
+  .modal__button {
+    margin-top: 16px;
   }
 </style>
