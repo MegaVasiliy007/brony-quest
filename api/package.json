@@ -18,6 +18,8 @@
     "nodemon": "^2.0.4"
   },
   "nodemonConfig": {
-    "ignore": ["models/*"]
+    "ignore": [
+      "models/*"
+    ]
   }
 }
