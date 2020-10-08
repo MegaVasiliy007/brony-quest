@@ -17,7 +17,7 @@
       <h1 class="srOnly">Ваш профиль</h1>
       <div class="collection__head">
         <p class="collection__name">{{ username }}</p>
-        <img src="/images/collectBg.png" alt="">
+        <img src="~static/images/collectBg.png" alt="">
       </div>
       <button @click="scan" class="collection__scanButton">Сканировать код</button>
       <button @click="help" class="collection__helpButton">Помощь</button>
@@ -79,7 +79,7 @@
 
     <modal name="fail-ans" :adaptive="true" :maxWidth="320" classes="modal modal_alert modal_fail">
       <p>Сори...</p>
-      <img src="/images/answer_fail.png" alt="" class="modal__failImage">
+      <img src="~static/images/answer_fail.png" alt="" class="modal__failImage">
     </modal>
 
     <modal name="help" :adaptive="true" :maxWidth="320" classes="modal">
@@ -213,7 +213,7 @@ export default {
 .authorization {
   padding-top: calc(10% + 294px + 4%);
   padding-bottom: 100px;
-  background-image: url('/images/authBg.png');
+  background-image: url('~static/images/authBg.png');
   background-size: 100% 294px;
   background-position: center 10%;
   background-repeat: no-repeat;
