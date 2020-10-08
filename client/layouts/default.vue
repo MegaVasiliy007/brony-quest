@@ -173,6 +173,7 @@ img {
 <style>
 /* Equestria-regular */
 @font-face {
+  font-display: swap;
   font-family: 'Equestria';
   font-style: normal;
   font-weight: 400;
@@ -183,6 +184,7 @@ img {
 
 /* Roboto-regular */
 @font-face {
+  font-display: swap;
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;

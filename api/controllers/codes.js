@@ -1,6 +1,7 @@
 const { users, saveUsers } = require('../utils/users')
 	, questions = require('../models/questions')
 	, codes = require('../models/codes')
+	, names = ['Fluttershy', 'Rarity', 'Pinkie Pie', 'Rainbow Dash', 'Twilight Sparkle', 'Applejack', 'Spike', 'Princess Celestia', 'Princess Luna', 'Princess Cadance']
 ;
 
 module.exports = {
@@ -22,8 +23,9 @@ module.exports = {
 			questionIndex = Math.floor(Math.random() * questions.length);
 		} while (users[user].tasks.find(el => el === questionIndex));
 
+		questionIndex = 3;
+
 		users[user].tasks.push(questionIndex);
-		saveUsers();
 
 		const question = {...questions[questionIndex]};
 		if (!question.answer) {
@@ -32,6 +34,10 @@ module.exports = {
 		}
 
 		delete question.answer;
+
+		question.character = names[users[user].all];
+
+		saveUsers();
 		res.json({ status: 'OK', question });
 	},
 
