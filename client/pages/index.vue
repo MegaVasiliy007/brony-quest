@@ -82,13 +82,17 @@
       <img src="~static/images/answer_fail.png" alt="" class="modal__failImage">
     </modal>
 
-    <modal name="help" :adaptive="true" :maxWidth="320" classes="modal">
-      <p>I help you!</p>
+    <modal name="help" :adaptive="true" :maxWidth="320" height="auto" classes="modal">
+      <p>Привет! Найди на территории фестиваля 10 QR-кодов и выполни задания. Постарайся отвечать правильно, не подсказывай другим и не используй чужие подсказки. После выполнения всех заданий на инфостенде тебя ждёт приз.</p>
     </modal>
 
-    <modal name="exit" :scrollable="true" :clickToClose="false" :focusTrap="true" :adaptive="true" :maxWidth="320"
+    <modal name="exit" :scrollable="true" :clickToClose="false" height="auto" :focusTrap="true" :adaptive="true" :maxWidth="320"
            classes="modal modal_alert modal_exit">
-      <p align="center">{{ exitInfo }}</p>
+      <p align="center">Выполнено заданий: {{ tasks.complete.length }}/10<br>{{ exitInfo }}</p>
+    </modal>
+
+    <modal name="already-scan" :adaptive="true" :maxWidth="320" classes="modal modal_alert modal_exit">
+      <p align="center">Ты уже находил этот QR-код</p>
     </modal>
   </main>
 </template>
@@ -115,7 +119,7 @@ export default {
     tasks: {
       deep: true,
       handler() {
-        if (this.tasks.all > 9 || this.tasks.failed.length > 1) {
+        if (this.tasks.all > 9) {
           this.$modal.show('exit');
         }
       }
@@ -139,7 +143,7 @@ export default {
     }
   },
   mounted() {
-    if (this.tasks.failed.length > 1 || this.tasks.all > 9) {
+    if (this.tasks.all > 9) {
       this.$modal.show('exit');
     }
   },
@@ -164,13 +168,17 @@ export default {
 
     async onDecode(hash) {
       const {status, question} = await this.$axios.$post('/scan', {hash});
-      if (status !== 'OK') return;
+      this.page = 1;
+
+      if (status !== 'OK') {
+        this.$modal.show('already-scan');
+        return;
+      }
 
       console.log(question);
       this.question = question;
       this.answer = this.question.variants[0];
       this.hash = hash;
-      this.page = 1;
       this.step = false;
       this.$modal.show('question');
     },
@@ -185,10 +193,11 @@ export default {
         return;
       }
 
+      this.$modal.show('fail-ans');
+
       if (this.step) {
-        this.tasks.failed.push(this.tasks.all++);
         this.$modal.hide('question');
-        this.$modal.show('fail-ans');
+        this.tasks.failed.push(this.tasks.all++);
         return;
       }
 

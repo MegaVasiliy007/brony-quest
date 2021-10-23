@@ -21,22 +21,19 @@ module.exports = {
 		let questionIndex;
 		do {
 			questionIndex = Math.floor(Math.random() * questions.length);
-		} while (users[user].tasks.find(el => el === questionIndex));
-
-		questionIndex = 3;
+		} while (users[user].tasks.find(el => el === questionIndex) || (users[user].codes[hash] === 'SECOND' && !questions[questionIndex].answer));
 
 		users[user].tasks.push(questionIndex);
 
 		const question = {...questions[questionIndex]};
+		question.character = names[users[user].all];
+
 		if (!question.answer) {
 			users[user].codes[hash] = 'DONE';
 			users[user].complete.push(users[user].all++);
 		}
 
 		delete question.answer;
-
-		question.character = names[users[user].all];
-
 		saveUsers();
 		res.json({ status: 'OK', question });
 	},
@@ -49,7 +46,7 @@ module.exports = {
 
 		const question = questions[users[user].tasks.last()];
 
-		if ((question.answer instanceof RegExp && !question.answer.test(answer)) || question.answer !== answer) {
+		if (!((question.answer instanceof RegExp && question.answer.test(answer)) || question.answer === answer)) {
 			if (users[user].codes[hash] === 'SECOND') {users[user].codes[hash] = 'FAIL'; users[user].failed.push(users[user].all++);}
 			saveUsers();
 			res.json({status: 'error'});
