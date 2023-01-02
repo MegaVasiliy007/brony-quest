@@ -11,7 +11,7 @@
       >
         <span class="point-ul__index">{{ index }}.</span>
         <p class="point-ul__text">
-          {{ getPoints[index - 1]?.name }}
+          {{ 'name' in getPoints[index - 1] ? getPoints[index - 1].name : '' }}
         </p>
       </li>
     </ul>
