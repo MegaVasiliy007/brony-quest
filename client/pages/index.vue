@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="main">
     <!--  Auth  -->
     <div v-if="page === 0" class="authorization">
       <h1 class="authorization__title">Собери команду</h1>
@@ -219,6 +219,10 @@ export default {
 </script>
 
 <style>
+.main {
+  margin: auto;
+}
+
 .authorization {
   padding-top: calc(10% + 294px + 4%);
   padding-bottom: 100px;

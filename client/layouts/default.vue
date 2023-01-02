@@ -37,6 +37,11 @@
   --container-width: 340px;
 }
 
+body {
+  width: 100%;
+  height: 100%;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -56,10 +61,6 @@
   word-break: break-word;
   overflow-x: hidden;
   background: linear-gradient(168.75deg, #F6F3B0 10.76%, #E99557 65.82%, #E15D51 95.82%);
-}
-
-main {
-  margin: auto;
 }
 
 ul {
@@ -167,9 +168,78 @@ img {
 .footer {
   margin: 16px 0;
 }
+
+body .vm--overlay {
+  background: #F2994A;
+  opacity: 0.6;
+}
+
+body .modal {
+  padding: 16px;
+  border-radius: 20px;
+  color: var(--color-gray1);
+}
+
+body .modal_alert {
+  display: flex;
+  align-items: center;
+  padding: 24px 10px 24px 32px;
+  font-family: var(--equestria);
+  font-size: 58px;
+  color: #fff;
+}
+
+body .modal_error {
+  padding: 8px;
+  font-size: 40px;
+  color: var(--color-gray1);
+}
+
+body .modal_fail {
+  background: linear-gradient(91.88deg, rgba(247, 22, 22, 0.7) -11.44%, rgba(146, 13, 13, 0.7) 106.2%), #C26FCF;
+}
+
+body .modal__failImage {
+  position: absolute;
+  width: 201px;
+  right: 10px;
+}
+
+body .modal_right {
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  background: linear-gradient(91.88deg, rgba(94, 163, 41, 0.7) -11.44%, rgba(186, 217, 0, 0.7) 106.2%), #3CB328;
+}
+
+body .modal__rightName {
+  margin-top: 16px;
+  font-size: 50px;
+  line-height: 1;
+}
+
+body .modal__question {
+  font-family: var(--equestria);
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+body .modal__question a {
+  color: #7C29A3;
+}
+
+body .modal__image {
+  margin-bottom: 24px;
+  border-radius: 5px;
+}
+
+body .modal__option + .modal__option {
+  margin-top: 12px;
+}
 </style>
 
-// Fonts
 <style>
 /* Equestria-regular */
 @font-face {
