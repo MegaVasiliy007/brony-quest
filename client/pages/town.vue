@@ -11,7 +11,7 @@
       >
         <span class="point-ul__index">{{ index }}.</span>
         <p class="point-ul__text">
-          {{ 'name' in getPoints[index - 1] ? getPoints[index - 1].name : '' }}
+          {{ typeof getPoints[index - 1] !== 'undefined' ? getPoints[index - 1].name : '' }}
         </p>
       </li>
     </ul>
