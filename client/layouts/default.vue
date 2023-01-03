@@ -169,6 +169,10 @@ img {
   margin: 16px 0;
 }
 
+body .vm--modal {
+  height: auto !important;
+}
+
 body .vm--overlay {
   background: #F2994A;
   opacity: 0.6;

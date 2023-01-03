@@ -204,7 +204,6 @@ export default {
       const {status, question} = await this.$axios.$post('/scan', {hash: this.hash});
       if (status !== 'OK') return;
 
-      console.log(question);
       this.question = question;
       this.answer = this.question.variants[0];
       this.step = true;

@@ -1,6 +1,14 @@
 <template>
   <main class="main-town">
+    <template v-if="pageState !== -1">
     <h2>Ты в команде - {{ getCommandName }}</h2>
+
+    <h3 align="center">Пройдено {{ getPoints.length - 1 }} из {{ getAllCount }} заданий!</h3>
+
+    <br>
+
+    <hr>
+
     <ul>
       <li
         class="point-ul__li"
@@ -10,18 +18,24 @@
         :class="{ 'point-ul__li--checked': pointIsComplete(index - 1), 'point-ul__li--failed': pointIsFailed(index - 1) }"
       >
         <span class="point-ul__index">{{ index }}.</span>
+
         <p class="point-ul__text">
           {{ typeof getPoints[index - 1] !== 'undefined' ? getPoints[index - 1].name : '' }}
         </p>
       </li>
     </ul>
+    </template>
 
-    <modal name="question"
+    <modal
+      name="question"
       :scrollable="true"
       :clickToClose="true"
       :focusTrap="true"
       :adaptive="true"
-      :maxWidth="320"
+      :shiftY="0"
+      :shiftX="0"
+      :reset="true"
+      width="100vw"
       height="auto"
       classes="modal"
     >
@@ -59,18 +73,53 @@
       </form>
     </modal>
 
-    <modal name="right-ans" :adaptive="true" :maxWidth="320" classes="modal modal_alert modal_right">
+    <modal
+      name="right-ans"
+      :adaptive="true"
+      :shiftY="0"
+      :shiftX="0"
+      width="100vw"
+      :reset="true"
+      classes="modal modal_alert modal_right">
       <p>ya got</p>
     </modal>
 
-    <modal name="fail-ans" :adaptive="true" :maxWidth="320" classes="modal modal_alert modal_fail">
+    <modal
+      name="fail-ans"
+      :adaptive="true"
+      :shiftY="0"
+      :shiftX="0"
+      width="100vw"
+      :reset="true"
+      classes="modal modal_alert modal_fail">
       <p>Сори...</p>
       <img src="~static/images/answer_fail.png" alt="" class="modal__failImage">
     </modal>
 
-<!--    <modal name="help" :adaptive="true" :maxWidth="320" height="auto" classes="modal">-->
-<!--      <p>Привет! Найди на территории фестиваля 10 QR-кодов и выполни задания. Постарайся отвечать правильно, не подсказывай другим и не используй чужие подсказки. После выполнения всех заданий на инфостенде тебя ждёт приз.</p>-->
-<!--    </modal>-->
+    <modal
+      name="help"
+      :adaptive="true"
+      :shiftY="0"
+      :shiftX="0"
+      :scrollable="true"
+      :reset="true"
+      height="auto"
+      width="100vw"
+      classes="modal">
+      <p style="white-space: pre-line">
+        Привет! И добро пожаловать на наш квест.
+        Тебе в составе твоей команды предстоит выполнить все наши задания и пройти весь путь от начала до конца. Нужно будет пройти весь Вечнозелёный лес и найти Сноуфолл Фрост, используя наши подсказки.
+        Ориентировочное время всего маршрута составит 1,5 - 2 часа. Задача команды собрать как можно больше баллов.
+        Важный момент — вся команда проходит одно задание одновременно, они синхронизированы.
+
+        Для прохождения точки необходимо нажать на элемент в списке и ответить на вопрос, если он есть.
+
+        Ознакомиться повторно с этой информацией можно нажав на кнопку помощь внизу страницы.
+        По всем вопросам — <a style="color: black;" href="tel:+79912970870">+79912970870</a>
+        <br>
+        <button @click.prevent="$modal.hide('help')" class="modal__button">Закрыть</button>
+      </p>
+    </modal>
 
     <modal
       name="qr-error"
@@ -79,7 +128,10 @@
       :clickToClose="false"
       :focusTrap="true"
       :adaptive="true"
-      :maxWidth="320"
+      :shiftY="0"
+      :shiftX="0"
+      :reset="true"
+      width="100vw"
       classes="modal modal_alert modal_error">
       <p align="center">
         QR-Код сломался!
@@ -95,7 +147,10 @@
       :clickToClose="false"
       :focusTrap="true"
       :adaptive="true"
-      :maxWidth="320"
+      :shiftY="0"
+      :shiftX="0"
+      :reset="true"
+      width="100vw"
       classes="modal modal_alert modal_error">
       <p align="center">
         Ошибка авторизации!
@@ -104,9 +159,7 @@
       </p>
     </modal>
 
-<!--    <modal name="already-scan" :adaptive="true" :maxWidth="320" classes="modal modal_alert modal_exit">-->
-<!--      <p align="center">Ты уже находил этот QR-код</p>-->
-<!--    </modal>-->
+    <button @click="help" class="modal__button">Помощь</button>
   </main>
 </template>
 
@@ -133,7 +186,10 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('town', ['isTownQuestAuthOk', 'getPoints', 'getCommandName', 'pointIsComplete', 'pointIsFailed', 'getAllCount']),
+    ...mapGetters(
+        'town',
+        ['isTownQuestAuthOk', 'getPoints', 'getCommandName', 'pointIsComplete', 'pointIsFailed', 'getAllCount', 'lastHandshakeIsNotValid']
+    ),
   },
 
   async mounted() {
@@ -150,7 +206,8 @@ export default {
       return;
     }
 
-    if (typeof this.$route.query?.login !== 'undefined' && typeof this.$route.query?.password !== 'undefined') {
+    if (typeof this.$route.query?.login !== 'undefined' && typeof this.$route.query?.password !== 'undefined') { // Первый заход
+      this.$modal.show('help');
       await this.$router.replace({ 'query': null });
     }
 
@@ -164,6 +221,9 @@ export default {
     }
 
     this.startPollingPoints();
+
+    this.$store.commit('town/updateLastHandshake');
+    this.initHeartbeat();
   },
 
   methods: {
@@ -186,12 +246,27 @@ export default {
 
       if (result === 'OK') {
         this.$modal.show('right-ans');
-      } else {
+      } else if (result === 'error') {
         this.$modal.show('fail-ans');
+      } else {
+        window.location.reload();
       }
 
       this.$modal.hide('question');
-    }
+    },
+
+    help() {
+      this.$modal.show('help');
+    },
+
+    initHeartbeat() {
+      setTimeout(() => {
+        if (this.lastHandshakeIsNotValid) window.location.reload();
+        else this.initHeartbeat();
+
+        this.$store.commit('town/updateLastHandshake');
+      }, 7000)
+    },
   }
 };
 </script>
