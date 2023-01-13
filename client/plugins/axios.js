@@ -3,6 +3,6 @@ export default ({$axios}) => {
 		console.log('Making request to ' + config.url)
 	})
 
-	$axios.setBaseURL('https://api.brony-quest.ru/');
+	$axios.setBaseURL('https://api.brony-quest.ru');
 	if (localStorage.name) $axios.setToken(btoa(unescape(encodeURIComponent(localStorage.name + ':' + localStorage.hash))), 'Basic');
 }

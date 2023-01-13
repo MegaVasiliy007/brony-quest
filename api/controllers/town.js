@@ -1,6 +1,6 @@
 const {users, saveUsers} = require("../utils/users");
 const routes = require('../models/routes');
-const longpull = { team1: [], team2: [], team3: [], admin: [] };
+const longpull = { 'Единороги': [], 'Земнопони': [], 'Пегасы': [], admin: [] };
 
 module.exports = {
 	init({ user }, res) {
@@ -19,9 +19,9 @@ module.exports = {
 			status: 'OK',
 			routes,
 			users: {
-				team1: { ...users.team1, hash: undefined, attempt: undefined },
-				team2: { ...users.team2, hash: undefined, attempt: undefined },
-				team3: { ...users.team3, hash: undefined, attempt: undefined }
+				'Единороги': { ...users['Единороги'], hash: undefined, attempt: undefined },
+				'Земнопони': { ...users['Земнопони'], hash: undefined, attempt: undefined },
+				'Пегасы': { ...users['Пегасы'], hash: undefined, attempt: undefined }
 			}
 		});
 	},
@@ -30,7 +30,8 @@ module.exports = {
 		longpull[user].push(res);
 	},
 
-	check({ user, body: { answer } }, res) {
+	check({ user, body: { index, answer } }, res) {
+		if (index !== users[user].point) return res.json({ status: 'wrongIndex' });
 		const question = routes[user][users[user].point];
 		const isAnswer = (question.answer instanceof RegExp && question.answer.test(answer)) || question.answer === answer
 
@@ -53,13 +54,17 @@ module.exports = {
 		users[user].attempt = 0;
 		saveUsers()
 
-		res.end();
-		while (longpull[user].length) {
-			const resLong = longpull[user].pop();
+		res.json({status: isAnswer ? 'OK' : 'error'});
+		const longpullUsers = [...longpull[user]];
+		longpull[user] = [];
+		while (longpullUsers.length) {
+			const resLong = longpullUsers.pop();
 			resLong.json({status: isAnswer ? 'OK' : 'error', point: {...routes[user][users[user].point], answer: undefined}});
 		}
-		while (longpull.admin.length) {
-			const resLong = longpull.admin.pop();
+		const longpullAdmins = [...longpull.admin];
+		longpull.admin = [];
+		while (longpullAdmins.length) {
+			const resLong = longpullAdmins.pop();
 			resLong.json({status: 'OK', user: { ...users[user], hash: undefined, attempt: undefined }});
 		}
 	}

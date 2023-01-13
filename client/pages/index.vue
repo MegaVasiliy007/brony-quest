@@ -78,17 +78,17 @@
     </modal>
 
     <modal name="fail-ans" :adaptive="true" :maxWidth="320" classes="modal modal_alert modal_fail">
-      <p>Сори...</p>
+      <p>Сорри...</p>
       <img src="~static/images/answer_fail.png" alt="" class="modal__failImage">
     </modal>
 
     <modal name="help" :adaptive="true" :maxWidth="320" height="auto" classes="modal">
-      <p>Привет! Найди на территории фестиваля 10 QR-кодов и выполни задания. Постарайся отвечать правильно, не подсказывай другим и не используй чужие подсказки. После выполнения всех заданий на инфостенде тебя ждёт приз.</p>
+      <p>Привет! Найди на территории фестиваля 7 QR-кодов и, кажется, Духи Рождества тоже что-то знают. Выполни задания. Постарайся отвечать правильно, не подсказывай другим и не используй чужие подсказки. После выполнения всех заданий на инфостенде тебя ждёт приз.</p>
     </modal>
 
     <modal name="exit" :scrollable="true" :clickToClose="false" height="auto" :focusTrap="true" :adaptive="true" :maxWidth="320"
            classes="modal modal_alert modal_exit">
-      <p align="center">Выполнено заданий: {{ tasks.complete.length }}/10<br>{{ exitInfo }}</p>
+      <p align="center">Выполнено заданий: {{ tasks.complete.length }}/7<br>{{ exitInfo }}</p>
     </modal>
 
     <modal name="already-scan" :adaptive="true" :maxWidth="320" classes="modal modal_alert modal_exit">
@@ -119,7 +119,7 @@ export default {
     tasks: {
       deep: true,
       handler() {
-        if (this.tasks.all > 9) {
+        if (this.tasks.all > 6) {
           this.$modal.show('exit');
         }
       }
@@ -143,7 +143,7 @@ export default {
     }
   },
   mounted() {
-    if (this.tasks.all > 9) {
+    if (this.tasks.all > 6) {
       this.$modal.show('exit');
     }
   },
@@ -184,7 +184,7 @@ export default {
     },
 
     async sendAnswer() {
-      const {status: statusAns} = await this.$axios.$post('/check', {hash: this.hash, answer: this.answer});
+      const {status: statusAns} = await this.$axios.$post('/check', {hash: this.hash, answer: this.answer.trim()});
 
       if (statusAns === 'OK') {
         this.tasks.complete.push(this.tasks.all++);
@@ -317,7 +317,7 @@ export default {
 .modal_exit {
   padding: 8px;
   font-size: 50px;
-  color: var(--color-gray1);
+  color: var(--color-gray1) !important;
 }
 
 .modal_fail {

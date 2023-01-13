@@ -1,109 +1,44 @@
 module.exports = [
 	{
-		text: 'Задиристая кузина Биг Мака из Мейнхеттена.',
+		text: 'С кем их этих персонажей поменялась кьютимаркой Рэрити в серии Magical Mystery Cure?',
+		image: '',
+		variants: ['Рэйнбоу Дэш', 'Флаттершай', 'Твалайт Спаркл'],
+		answer: 'Рэйнбоу Дэш'
+	},
+	{
+		text: 'В серии "To many Pinkie Pies" именно это помогло Пинки Пай создать своих клонов',
 		image: '',
 		variants: [],
-		answer: /Б[эе]б[сз] Си[дт]/g
+		answer: 'Озеро'
 	},
 	{
-		text: 'Племянник Принцессы Селестии:',
-		image: '',
-		variants: ['Блюблад', 'Биг Мак', 'Шайнинг Армор', 'Брейбёрн'],
-		answer: 'Блюблад'
-	},
-	{
-		text: 'Именно на этой ферме работала Эпплджек после побега из Понивилля в серии <a href="https://thedoctorteam.ru/videos/#category=mplay&s=2&ep=14&type=sub" target="_blank">Пропажа</a>.',
-		image: '',
-		variants: ['Грушевая', 'Яблочная', 'Вишневая', 'Лимонная'],
-		answer: 'Вишневая'
-	},
-	{
-		text: '',
-		image: 'https://cdn.discordapp.com/attachments/673970806761586718/764279920171941918/1393525428942.jpg',
-		variants: [],
-		answer: ''
-	},
-	{
-		text: "Продолжите песню:<br>In Our Town, in Our Town<br>We don't have to wait",
-		image: '',
-		variants: [
-			'Together we can raise this barn one. two. three. four<br>Up, up, up go to the beams',
-			'To find out that our destiny<br>Is just to emulate',
-			'I really am so happy<br>Your smile fills me with glee',
-			'This is where the magic happens<br>This is where the magic lives'
-		],
-		answer: 'To find out that our destiny<br>Is just to emulate'
-	},
-	{
-		text: 'Какой сезон получился наиболее коротким, так как планировался последним?',
-		image: '',
-		variants: ['3', '4', '5', '6'],
-		answer: '3'
-	},
-	{
-		text: 'Сильные духи, питающиеся злом и ненавистью пони, приносят с собой холод.',
+		text: 'Магическое число Твайлайт Спаркл',
 		image: '',
 		variants: [],
-		answer: /В[ие]ндиго/g
+		answer: '42'
 	},
 	{
-		text: 'Эта пони стала второй половинкой Биг Мака под действием приворотного зелья в серии "Hearth\'s and Hooves Day" ("День Сердец и Копыт")',
+		text: 'Какой из персонажей ниже покинул квест Дискорда в серии The Return of Harmony?',
 		image: '',
-		variants: ['Шугар Белль', 'Черили', 'Берри Панч', 'Рэрити'],
-		answer: 'Черили'
+		variants: ['Флаттершай', 'Рэрити', 'Рэйнбоу Дэш'],
+		answer: 'Рэйнбоу Дэш'
 	},
 	{
-		text: 'Элемент Радости',
+		text: "Кто такой Верко из My little pony: The Movie?",
 		image: '',
-		variants: ['Эпплджек', 'Рэйнбоу Дэш', 'Твайлайт Спаркл', 'Пинки Пай'],
-		answer: 'Пинки Пай'
+		variants: ['Крыса', 'Ёж', 'Единорог'],
+		answer: 'Крыса'
 	},
 	{
-		text: 'Праздник уборки зимы',
+		text: 'Им на самом деле оказался Грогар:',
 		image: '',
-		variants: ['Summer Sun Celebration', 'Nigtmare Night', 'Winter Wrap Up', 'Hearth\'s Warming Eve'],
-		answer: 'Winter Wrap Up'
-	},
-	{
-		text: 'Именно она украла у принцессы СкайСтар жемчужину в MLP:Movie',
-		image: '',
-		variants: ['Пинки Пай', 'Эпплджек', 'Рэйнбоу Дэш', 'Твайлайт Спаркл'],
-		answer: 'Твайлайт Спаркл'
-	},
-	{
-		text: '',
-		image: 'https://cdn.discordapp.com/attachments/673970806761586718/763521837907968000/file.gif',
 		variants: [],
-		answer: ''
+		answer: 'Дискорд'
 	},
 	{
-		text: 'Питомец Твайлайт',
+		text: 'Задиристая кузина Биг Мака:',
 		image: '',
-		variants: ['Филин', 'Собака', 'Крокодил', 'Дракончик'],
-		answer: 'Филин'
-	},
-	{
-		text: 'Единственный злодей, который <b>не</b> был заточён в камень в последней серии 9 сезона',
-		image: '',
-		variants: ['Кози Глоу', 'Тирек', 'Кризалис', 'Сомбра'],
-		answer: 'Сомбра'
-	},
-	{
-		text: 'Синий аликорн',
-		image: '',
-		variants: ['Твайлайт', 'Селестия', 'Луна', 'Флурри Харт'],
-		answer: 'Луна'
-	},
-	{
-		text: 'Некогда подруга Рэйнбоу Дэш, грифон',
-		image: '',
-		variants: ['Гильда', 'Отом Блейз', 'Вайнона', 'Черили'],
-		answer: 'Гильда'
-	},
-	{
-		text: 'Отсюда родом Рэйнбоу Дэш',
-		image: '',
-		variants: ['Понивилль', 'Эпплуза', 'Кантерлот', 'Клоудсдейл'],
-		answer: 'Клоудсдейл'
-	},
+		variants: ['Голди Дэлишес', 'Бэбс Сид', 'Флурри Харт'],
+		answer: 'Бэбс Сид'
+	}
 ]
