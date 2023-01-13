@@ -3,8 +3,8 @@ export const state = () => ({
   password: null,
   status: null,
   all: null,
-  complete: null,
-  failed: null,
+  complete: [],
+  failed: [],
   points: [],
   lastHandshake: 0,
 });
@@ -23,6 +23,8 @@ export const getters = {
   pointIsFailed: state => index => state.failed.includes(index),
 
   lastHandshakeIsNotValid: state => +new Date() - state.lastHandshake > 10000,
+
+  isQuestEnded: state => state.complete.length + state.complete.length === state.all,
 }
 
 export const mutations = {
@@ -91,6 +93,7 @@ export const actions = {
         context.commit('pushCompletePoint', context.state.points.length - 1);
       }
 
+      if (Object.keys(request.data.point).length === 0) return;
       context.commit('pushPoint', request.data.point);
     }
 

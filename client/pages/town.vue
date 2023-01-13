@@ -3,18 +3,19 @@
     <template v-if="pageState !== -1">
     <h2>Ты в команде - {{ getCommandName }}</h2>
 
-    <h3 align="center">Пройдено {{ getPoints.length - 1 }} из {{ getAllCount }} заданий!</h3>
+    <h3 align="center">Пройдено {{ getPoints.length }} из {{ getAllCount }} заданий!</h3>
 
     <br>
 
     <hr>
 
+    <template v-if="!isQuestEnded">
     <ul>
       <li
         class="point-ul__li"
         v-for="index in getAllCount"
         :key="index"
-        @click="showQuestion(index)"
+        @click="showQuestion()"
         :class="{ 'point-ul__li--checked': pointIsComplete(index - 1), 'point-ul__li--failed': pointIsFailed(index - 1) }"
       >
         <span class="point-ul__index">{{ index }}.</span>
@@ -24,6 +25,8 @@
         </p>
       </li>
     </ul>
+    </template>
+
     </template>
 
     <modal
@@ -68,7 +71,9 @@
         </div>
 
         <div v-else>
-          <button @click.prevent="checkPoint" class="modal__button">Полетели дальше!</button>
+          <button @click.prevent="checkPoint" class="modal__button">
+            {{ getPoints.length !== getAllCount ? 'Полетели дальше!' : 'Завершить квест!' }}
+          </button>
         </div>
       </form>
     </modal>
@@ -92,7 +97,7 @@
       width="100vw"
       :reset="true"
       classes="modal modal_alert modal_fail">
-      <p>Сори...</p>
+      <p>Сорри...</p>
       <img src="~static/images/answer_fail.png" alt="" class="modal__failImage">
     </modal>
 
@@ -188,7 +193,7 @@ export default {
   computed: {
     ...mapGetters(
         'town',
-        ['isTownQuestAuthOk', 'getPoints', 'getCommandName', 'pointIsComplete', 'pointIsFailed', 'getAllCount', 'lastHandshakeIsNotValid']
+        ['isTownQuestAuthOk', 'getPoints', 'getCommandName', 'pointIsComplete', 'pointIsFailed', 'getAllCount', 'lastHandshakeIsNotValid', 'isQuestEnded']
     ),
   },
 
@@ -229,7 +234,7 @@ export default {
   methods: {
     ...mapActions('town', ['doAuth', 'postAnswer', 'startPollingPoints']),
 
-    showQuestion(index) {
+    showQuestion(index = this.getPoints.length) {
       if (this.pointIsComplete(index - 1)
           || this.pointIsFailed(index - 1)
           || typeof this.getPoints[index - 1]?.name === 'undefined') {
