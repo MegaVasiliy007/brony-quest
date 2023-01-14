@@ -24,7 +24,7 @@ export const getters = {
 
   lastHandshakeIsNotValid: state => +new Date() - state.lastHandshake > 10000,
 
-  isQuestEnded: state => state.complete.length + state.complete.length === state.all,
+  isQuestEnded: state => state.complete.length + state.failed.length === state.all,
 }
 
 export const mutations = {
