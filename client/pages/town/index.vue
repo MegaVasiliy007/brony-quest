@@ -86,7 +86,7 @@
       width="100vw"
       :reset="true"
       classes="modal modal_alert modal_right">
-      <p>ya got</p>
+      <p>Верно!</p>
     </modal>
 
     <modal
