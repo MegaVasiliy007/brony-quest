@@ -11,11 +11,25 @@
           class="point-ul__li"
           v-for="(point, index) in route"
           :key="index"
+          :class="{ 'point-ul__li--checked': pointIsComplete(routeIndex, index), 'point-ul__li--failed': pointIsFailed(routeIndex, index) }"
         >
           <span class="point-ul__index">{{ index + 1 }}.</span>
 
           <p class="point-ul__text">
             {{ point.name }}
+
+          <br>
+
+          <span style="font-size: .8em">
+            {{ pointTimestamp(routeIndex, index) !== -1 ? new Date(pointTimestamp(routeIndex, index)) : '' }}
+          </span>
+
+          <br>
+
+          <span>
+          {{ pointIsFailed(routeIndex, index) ? getWrongAnswers(routeIndex, index) : '' }}
+          </span>
+
           </p>
         </li>
       </ul>
@@ -62,7 +76,7 @@ export default {
   computed: {
     ...mapGetters(
         'adminTown',
-        ['isTownQuestAuthOk', 'getRoutes', 'getUsers', 'pointIsComplete', 'pointIsFailed', 'lastHandshakeIsNotValid']
+        ['isTownQuestAuthOk', 'getRoutes', 'getUsers', 'pointIsComplete', 'pointIsFailed', 'lastHandshakeIsNotValid', 'pointTimestamp', 'getWrongAnswers']
     ),
   },
 
@@ -93,50 +107,10 @@ export default {
 
       return;
     }
-
-    this.startPollingPoints();
-
-    this.$store.commit('adminTown/updateLastHandshake');
-    this.initHeartbeat();
   },
 
   methods: {
-    ...mapActions('adminTown', ['doAuth', 'postAnswer', 'startPollingPoints']),
-
-    showQuestion(index = this.getPoints.length) {
-      if (this.pointIsComplete(index - 1)
-          || this.pointIsFailed(index - 1)
-          || typeof this.getPoints[index - 1]?.name === 'undefined') {
-        return
-      }
-
-      this.question = this.getPoints[index - 1];
-      this.$modal.show('question');
-    },
-
-    async checkPoint() {
-      const result = await this.postAnswer(this.answer.toLocaleLowerCase().trim());
-      this.answer = '';
-
-      if (result === 'OK') {
-        this.$modal.show('right-ans');
-      } else if (result === 'error') {
-        this.$modal.show('fail-ans');
-      } else {
-        window.location.reload();
-      }
-
-      this.$modal.hide('question');
-    },
-
-    initHeartbeat() {
-      setTimeout(() => {
-        if (this.lastHandshakeIsNotValid) window.location.reload();
-        else this.initHeartbeat();
-
-        this.$store.commit('adminTown/updateLastHandshake');
-      }, 7000)
-    },
+    ...mapActions('adminTown', ['doAuth']),
   }
 };
 </script>
@@ -272,34 +246,12 @@ h2 {
   align-self: center;
 }
 .point-ul__text {
-  text-decoration: underline;
-}
-.point-ul__li--checked,
-.point-ul__li--failed {
-  color: #695D4150;
+  font-family: sans-serif;
 }
 .point-ul__li--checked {
-  background: #3CB328;
-}
-.point-ul__li--checked::after {
-  content: '✅️';
-  color: #ffffff;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 50px;
+  background: rgba(60, 179, 40, 0.23);
 }
 .point-ul__li--failed {
-  background: #E15D51;
-}
-.point-ul__li--failed::after {
-  content: '❌️';
-  color: #ffffff;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 50px;
+  background: rgba(225, 93, 81, 0.3);
 }
 </style>
